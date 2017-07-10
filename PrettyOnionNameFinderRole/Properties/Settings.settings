@@ -1,0 +1,23 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PrettyOnionNameFinderRole" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Searched" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;your&lt;/string&gt;
+  &lt;string&gt;onion&lt;/string&gt;
+  &lt;string&gt;prefix&lt;/string&gt;
+  &lt;string&gt;here&lt;/string&gt;
+  &lt;string&gt;the&lt;/string&gt;
+  &lt;string&gt;most&lt;/string&gt;
+  &lt;string&gt;the&lt;/string&gt;
+  &lt;string&gt;more&lt;/string&gt;
+  &lt;string&gt;probable&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="TaskNumber" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
