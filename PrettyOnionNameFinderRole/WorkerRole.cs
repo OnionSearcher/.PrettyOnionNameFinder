@@ -50,35 +50,44 @@ namespace PrettyOnionNameFinderRole
             {
                 await Task.Delay(5000, cancellationToken); // let time to Azure to know that we are OK before taking 100% CPU...
                 RotManager.TryKillTorIfRequired();
+                PerfCounter.Init();
 
-                // pools init
-                taskPool = new List<Task>(Settings.Default.TaskNumber);
-                for (int i = 0; i < taskPool.Capacity; i++)
-                    taskPool.Add(null);
-
-                // main loop
-                while (!cancellationToken.IsCancellationRequested)
+                if (Settings.Default.TaskNumber > 1)
                 {
-                    for (int i = 0; !cancellationToken.IsCancellationRequested && i < taskPool.Count; i++)
-                    {
-                        Task task = taskPool[i];
-                        if (task != null && (task.IsCanceled || task.IsCompleted || task.IsFaulted))
-                        {
-                            task.Dispose();
-                            taskPool[i] = null;
-                        }
-                        if (taskPool[i] == null && !cancellationToken.IsCancellationRequested)
-                        {
-                            int iVarRequiredForLambda = i; // <!> else the i may be changed by next for iteration in this multi task app !!!
-                            taskPool[i] = Task.Run(() =>
-                            {
-                                RunTask(iVarRequiredForLambda, cancellationToken).Wait(cancellationToken);
-                            }, cancellationToken);
-                            Task.Delay(5000, cancellationToken).Wait(cancellationToken); // avoid violent startup by x tor started in same instant
-                        }
-                    }
+                    // pools init
+                    taskPool = new List<Task>(Settings.Default.TaskNumber);
+                    for (int i = 0; i < taskPool.Capacity; i++)
+                        taskPool.Add(null);
 
-                    await Task.Delay(30000, cancellationToken);
+                    // main loop
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        for (int i = 0; !cancellationToken.IsCancellationRequested && i < taskPool.Count; i++)
+                        {
+                            Task task = taskPool[i];
+                            if (task != null && (task.IsCanceled || task.IsCompleted || task.IsFaulted))
+                            {
+                                task.Dispose();
+                                taskPool[i] = null;
+                            }
+                            if (taskPool[i] == null && !cancellationToken.IsCancellationRequested)
+                            {
+                                int iVarRequiredForLambda = i; // <!> else the i may be changed by next for iteration in this multi task app !!!
+                                taskPool[i] = Task.Run(() =>
+                                {
+                                    RunTask(iVarRequiredForLambda, cancellationToken).Wait(cancellationToken);
+                                }, cancellationToken);
+                                Task.Delay(5000, cancellationToken).Wait(cancellationToken); // avoid violent startup by x tor started in same instant
+                            }
+                        }
+
+                        await Task.Delay(30000, cancellationToken);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 50 && !cancellationToken.IsCancellationRequested; i++)
+                        await RunTask(i, cancellationToken);    // if return, try with another tor setting availeable
                 }
             }
             catch (OperationCanceledException) { }
@@ -94,23 +103,26 @@ namespace PrettyOnionNameFinderRole
             Trace.TraceInformation("WorkerRole.RunAsync : End");
         }
 
+        private const int taskDelay = 10;
         private static async Task RunTask(int i, CancellationToken cancellationToken)
         {
             try
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    //using (RotManager rot = new RotManager(i)) // keep same proxy for a few time
-                    //{
-                    //    do
-                    //    {
-                    //        await Task.Delay(50, cancellationToken);
-                    //    } while (!rot.IsOnionReady() && !cancellationToken.IsCancellationRequested);
-                    //    await Task.Delay(50, cancellationToken); // let tor finish it s write and limit FileNotFoundException
-                    //    if (!cancellationToken.IsCancellationRequested)
-                    //        rot.TraceOnion();
-                    //}
-                    await Task.Delay(50*5, cancellationToken);
+                    PerfCounter.CounterStarted.Increment();
+                    using (RotManager rot = new RotManager(i)) // keep same proxy for a few time
+                    {
+                        do
+                        {
+                            await Task.Delay(taskDelay, cancellationToken);
+                        } while (!rot.IsOnionReady() && !cancellationToken.IsCancellationRequested);
+                        await Task.Delay(taskDelay, cancellationToken); // let tor finish it s write and limit FileNotFoundException
+                        if (!cancellationToken.IsCancellationRequested)
+                            if (rot.TraceOnion())
+                                PerfCounter.CounterValided.Increment();
+                    }
+                    await Task.Delay(taskDelay, cancellationToken);
                 }
             }
             catch (OperationCanceledException) { }
@@ -125,9 +137,9 @@ namespace PrettyOnionNameFinderRole
 
         public override void OnStop()
         {
-            cancellationTokenSource.Cancel();
-
             Trace.TraceWarning("WorkerRole is stoping");
+
+            cancellationTokenSource.Cancel();
 
             if (taskPool != null)
             {
@@ -153,11 +165,11 @@ namespace PrettyOnionNameFinderRole
                 taskPool = null; // may raise exception on the i < taskPool.Count who may continue in parrallele
             }
 
-            base.OnStop(); // raise the cancellationToken before the taskPool cleanup
-
             RotManager.TryKillTorIfRequired();
+
+            base.OnStop(); // raise the cancellationToken before the taskPool cleanup
         }
-        
+
         #region IDisposable Support
 
         private bool disposedValue = false;

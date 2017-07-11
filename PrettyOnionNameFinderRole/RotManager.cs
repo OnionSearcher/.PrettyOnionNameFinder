@@ -24,7 +24,7 @@ namespace PrettyOnionNameFinderRole
                 Trace.TraceWarning("RotManager.killTorIfRequired Exception : " + ex.GetBaseException().Message);  // No right usualy, simple message to keep.
             }
         }
-        
+
         private void OutputHandler(object sender, DataReceivedEventArgs e)
         {
 
@@ -38,10 +38,12 @@ namespace PrettyOnionNameFinderRole
                     if (Debugger.IsAttached) { Debugger.Break(); }
 #endif
                 }
-                //else
-                //{
-                //    Trace.TraceInformation("RotManager : " + e.Data);
-                //}
+#if DEBUG
+                else
+                {
+                    Trace.TraceInformation("RotManager : " + e.Data);
+                }
+#endif
             }
         }
 
@@ -87,25 +89,26 @@ namespace PrettyOnionNameFinderRole
             pathHostname = Path.Combine(basePath, @"ExpertBundle\Data\" + i.ToString() + @"\hostname");
             pathPrivate_key = Path.Combine(basePath, @"ExpertBundle\Data\" + i.ToString() + @"\private_key");
         }
-        
+
         public bool IsOnionReady()
         {
             return File.Exists(pathHostname) && File.Exists(pathPrivate_key);
         }
 
-        public void TraceOnion()
+        public bool TraceOnion()
         {
             try
             {
                 string hostname = File.ReadAllText(pathHostname).TrimEnd();
+#if DEBUG
                 Trace.TraceInformation(hostname);
-
+#endif
                 foreach (string str in searched)
                 {
                     if (hostname.StartsWith(str))
                     {
                         Trace.TraceError(hostname + ":" + File.ReadAllText(pathPrivate_key).TrimEnd()); // log as max level
-                        break;
+                        return true;
                     }
                 }
             }
@@ -113,16 +116,11 @@ namespace PrettyOnionNameFinderRole
             {
                 Trace.TraceWarning("FileNotFoundException");
             }
-            finally
-            {
-                if (File.Exists(pathHostname)) File.Delete(pathHostname);
-                if (File.Exists(pathPrivate_key)) File.Delete(pathPrivate_key);
-            }
+            return false;
         }
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
-
 
         protected virtual void Dispose(bool disposing)
         {
@@ -139,7 +137,7 @@ namespace PrettyOnionNameFinderRole
                                 process.Kill();
                                 while (!process.HasExited)
                                 {
-                                    Task.Delay(50).Wait();
+                                    Task.Delay(10).Wait();
                                 }
                             }
                             catch (Exception ex)
@@ -150,6 +148,8 @@ namespace PrettyOnionNameFinderRole
                         process.Dispose();
                         process = null;
                     }
+                    if (File.Exists(pathHostname)) File.Delete(pathHostname);
+                    if (File.Exists(pathPrivate_key)) File.Delete(pathPrivate_key);
                 }
                 disposedValue = true;
             }

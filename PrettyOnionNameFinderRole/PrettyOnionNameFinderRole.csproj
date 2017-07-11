@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PerfCounter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -58,7 +59,9 @@
     <Compile Include="WorkerRole.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ExpertBundle\Data\rotrc-defaults">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -212,6 +215,12 @@
     <None Include="ExpertBundle\Data\rotrc9">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="PerfCounter.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="PerfCounter.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -219,33 +228,33 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ExpertBundle\Rot\libeay32.dll">
+    <None Include="ExpertBundle\Rot\libeay32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\libevent-2-0-5.dll">
+    </None>
+    <None Include="ExpertBundle\Rot\libevent-2-0-5.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\libevent_core-2-0-5.dll">
+    </None>
+    <None Include="ExpertBundle\Rot\libevent_core-2-0-5.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\libevent_extra-2-0-5.dll">
+    </None>
+    <None Include="ExpertBundle\Rot\libevent_extra-2-0-5.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\libgcc_s_sjlj-1.dll">
+    </None>
+    <None Include="ExpertBundle\Rot\libgcc_s_sjlj-1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\libssp-0.dll">
+    </None>
+    <None Include="ExpertBundle\Rot\libssp-0.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\rot.exe">
+    </None>
+    <None Include="ExpertBundle\Rot\rot.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\ssleay32.dll">
+    </None>
+    <None Include="ExpertBundle\Rot\ssleay32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpertBundle\Rot\zlib1.dll">
+    </None>
+    <None Include="ExpertBundle\Rot\zlib1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

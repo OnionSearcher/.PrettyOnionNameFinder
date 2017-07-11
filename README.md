@@ -14,3 +14,5 @@ Requirement :
 Whishlist :
 
 - Get contributions !
+- Get someone who can explein me how generate theses files directy (without starting tor, th
+is will be so much faster). I guess it should be in, or close, to https://github.com/torproject/tor/blob/master/src/or/rendservice.c
