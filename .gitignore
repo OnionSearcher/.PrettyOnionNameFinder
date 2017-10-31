@@ -305,3 +305,7 @@ __pycache__/
 /PrettyOnionNameFinderRole/ExpertBundle/Rot/libevent-2-0-5.dll
 /PrettyOnionNameFinderRole/ExpertBundle/Rot/libeay32.dll
 *.wadcfgx
+*.msi
+*.dll
+*.exe
+*.cl

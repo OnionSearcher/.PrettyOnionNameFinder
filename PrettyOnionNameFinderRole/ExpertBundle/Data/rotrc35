@@ -1,5 +1,0 @@
-SocksPort ???PORT???35 IPv6Traffic PreferIPv6 KeepAliveIsolateSOCKSAuth
-ControlPort ???PORT???35
-HiddenServiceDir ./ExpertBundle/Data/35
-HiddenServicePort 80 127.0.0.1:80
-DataDirectory ./ExpertBundle/Data/35

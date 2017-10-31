@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzurePrettyOnionNameFinder", "AzurePrettyOnionNameFinder\AzurePrettyOnionNameFinder.ccproj", "{B310C8B2-70A8-4201-9397-51F379ED61F7}"
 EndProject

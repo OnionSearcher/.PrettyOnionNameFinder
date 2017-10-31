@@ -37,18 +37,17 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="PrettyOnionNameFinderRoleContent" />
+    <Folder Include="Profiles" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PrettyOnionNameFinderRole\PrettyOnionNameFinderRole.csproj">
       <Name>PrettyOnionNameFinderRole</Name>
       <Project>{eadb9a71-dbe4-4cdb-9ed4-11837d96d12d}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
       <RoleName>PrettyOnionNameFinderRole</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>False</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PrettyOnionNameFinderRoleContent\" />
-    <Folder Include="Profiles" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

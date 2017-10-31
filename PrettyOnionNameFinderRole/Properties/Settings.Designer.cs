@@ -25,30 +25,10 @@ namespace PrettyOnionNameFinderRole {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>your</string>
-  <string>onion</string>
-  <string>prefix</string>
-  <string>here</string>
-  <string>the</string>
-  <string>most</string>
-  <string>the</string>
-  <string>more</string>
-  <string>probable</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection Searched {
+        [global::System.Configuration.DefaultSettingValueAttribute("yourstring")]
+        public string Searched {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["Searched"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public int TaskNumber {
-            get {
-                return ((int)(this["TaskNumber"]));
+                return ((string)(this["Searched"]));
             }
         }
     }
